@@ -18,7 +18,9 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.experience.McMMOPlayerXpChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
+import com.gmail.nossr50.events.experience.McMMOPlayerXpLossEvent;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -108,15 +110,15 @@ public class EventUtils {
         mcMMOPlayer.actualizePtpLastUse();
     }
 
-    public static boolean handleXpGainEvent(Player player, SkillType skill, float xpGained) {
-        McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained);
+    public static boolean handleXpChangeEvent(Player player, SkillType skill, float xpChanged, boolean isXpGain) {
+        McMMOPlayerXpChangeEvent event = isXpGain ? new McMMOPlayerXpGainEvent(player, skill, xpChanged) : new McMMOPlayerXpLossEvent(player, skill, xpChanged);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         boolean isCancelled = event.isCancelled();
 
         if (!isCancelled) {
             PlayerProfile profile = UserManager.getPlayer(player).getProfile();
-            profile.setSkillXpLevel(skill, profile.getSkillXpLevelRaw(skill) + event.getRawXpGained());
+            profile.setSkillXpLevel(skill, profile.getSkillXpLevelRaw(skill) + (isXpGain ? ((McMMOPlayerXpGainEvent) event).getRawXpGained() : -((McMMOPlayerXpLossEvent) event).getRawXpLost()));
         }
 
         return !isCancelled;

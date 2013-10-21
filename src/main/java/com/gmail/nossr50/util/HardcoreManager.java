@@ -75,15 +75,12 @@ public final class HardcoreManager {
             float killerXpRemoved = killerProfile.getSkillXpLevelRaw(skillType);
             killerProfile.modifySkill(skillType, killerSkillLevel + levelsStolen);
             EventUtils.handleLevelChangeEvent(killer, skillType, levelsStolen, killerXpRemoved, true);
-
-            killerProfile.addExperience(skillType, xpStolen);
-            EventUtils.handleXpGainEvent(killer, skillType, xpStolen);
+            EventUtils.handleXpChangeEvent(killer, skillType, xpStolen, true);
 
             float victimXpRemoved = killerProfile.getSkillXpLevelRaw(skillType);
             victimProfile.modifySkill(skillType, victimSkillLevel - levelsStolen);
-            victimProfile.removeXp(skillType, xpStolen);
-
-            EventUtils.handleLevelChangeEvent(victim, skillType, levelsStolen, victimXpRemoved + xpStolen, false);
+            EventUtils.handleLevelChangeEvent(victim, skillType, levelsStolen, victimXpRemoved, false);
+            EventUtils.handleXpChangeEvent(killer, skillType, xpStolen, false);
         }
 
         if (totalLevelsStolen > 0) {
