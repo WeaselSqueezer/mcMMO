@@ -48,7 +48,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
@@ -868,22 +867,12 @@ public class McMMOPlayer {
             return;
         }
 
-        if (EventUtils.callPlayerAbilityActivateEvent(player, ability).isCancelled()) {
+        if (!EventUtils.handlePlayerAbilityActivateEvent(player, ability)) {
             return;
         }
 
         int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxLength());
 
-        // Notify people that ability has been activated
-        ParticleEffectUtils.playAbilityEnabledEffect(player);
-
-        if (useChatNotifications()) {
-            player.sendMessage(ability.getAbilityOn());
-        }
-
-        SkillUtils.sendSkillMessage(player, ability.getAbilityPlayer(player));
-
-        // Enable the ability
         profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
