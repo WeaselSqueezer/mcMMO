@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.experience.levels.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
 public class SelfListener implements Listener {
