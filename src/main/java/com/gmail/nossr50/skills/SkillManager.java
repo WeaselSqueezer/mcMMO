@@ -31,7 +31,7 @@ public abstract class SkillManager {
     }
 
     public int getSkillLevel() {
-        return mcMMOPlayer.getProfile().getSkillLevel(skill);
+        return getProfile().getSkillLevel(skill);
     }
 
     public int getActivationChance() {
