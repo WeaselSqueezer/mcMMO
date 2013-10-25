@@ -28,22 +28,6 @@ public class AxesManager extends SkillManager {
         super(mcMMOPlayer, SkillType.AXES);
     }
 
-    private boolean canUseAxeMastery(LivingEntity target) {
-        return target.isValid() && Permissions.bonusDamage(getPlayer(), skill);
-    }
-
-    private boolean canCriticalHit(LivingEntity target) {
-        return target.isValid() && Permissions.criticalStrikes(getPlayer()) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel);
-    }
-
-    private boolean canImpact(LivingEntity target) {
-        return target.isValid() && Axes.hasArmor(target) && Permissions.armorImpact(getPlayer());
-    }
-
-    private boolean canUseGreaterImpact(LivingEntity target) {
-        return target.isValid() && !Axes.hasArmor(target) && Permissions.greaterImpact(getPlayer()) && (Axes.greaterImpactChance > Misc.getRandom().nextInt(getActivationChance()));
-    }
-
     /**
      * Handle the effects of the Axe Mastery ability
      *
@@ -187,4 +171,21 @@ public class AxesManager extends SkillManager {
 
         return (short) (Math.min(modifiedDurabilityDamage, maxDurabilityDamage));
     }
+
+    private boolean canUseAxeMastery(LivingEntity target) {
+        return target.isValid() && Permissions.bonusDamage(getPlayer(), skill);
+    }
+
+    private boolean canCriticalHit(LivingEntity target) {
+        return target.isValid() && Permissions.criticalStrikes(getPlayer()) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel);
+    }
+
+    private boolean canImpact(LivingEntity target) {
+        return target.isValid() && Axes.hasArmor(target) && Permissions.armorImpact(getPlayer());
+    }
+
+    private boolean canUseGreaterImpact(LivingEntity target) {
+        return target.isValid() && !Axes.hasArmor(target) && Permissions.greaterImpact(getPlayer()) && (Axes.greaterImpactChance > Misc.getRandom().nextInt(getActivationChance()));
+    }
+
 }
